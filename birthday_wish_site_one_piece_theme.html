@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday, <span id="tabName">Captain</span> 👒</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#07151f;           /* deep ocean blue */
+      --card:#0e1b26;         /* night sea */
+      --muted:#9fb3c7;        /* misty blue */
+      --text:#f6fbff;         /* foam white */
+      --accent:#f5d76e;       /* straw yellow */
+      --accent-2:#e24b4a;     /* pirate red */
+      --pill:#0c1620;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Poppins, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: radial-gradient(1200px 600px at 80% -10%, #0f2735 0%, #07151f 60%, #041018 100%);
+      color:var(--text);
+      overflow-x:hidden;
+    }
+    .container{max-width:950px;margin:0 auto;padding:24px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 0}
+    .logo{font-family:"Great Vibes", cursive;font-size:40px;letter-spacing:.5px;color:var(--accent)}
+    .pill{background:var(--pill);color:var(--text);border:1px solid #1f2c38;padding:8px 14px;border-radius:999px;font-size:14px}
+
+    /* Hero */
+    .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.0));border:1px solid #1f2c38;border-radius:20px;padding:22px}
+    .headline{font-size:52px;line-height:1.05;margin:8px 0 14px}
+    .headline span.name{color:var(--accent)}
+    .sub{color:var(--muted)}
+    .ctaRow{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+    .btn{border:none;cursor:pointer;border-radius:14px;padding:12px 16px;font-weight:600;font-size:16px}
+    .btn.primary{background:var(--accent);color:#171717;box-shadow:0 6px 20px rgba(245,215,110,.25)}
+    .btn.ghost{background:transparent;border:1px solid #1f2c38;color:var(--text)}
+
+    .envelope{
+      position:relative;aspect-ratio:4/3;background:#0b1924;border-radius:16px;border:1px solid #1f2c38;overflow:hidden;display:grid;place-items:center
+    }
+    .envelope::before{
+      content:"";position:absolute;inset:0;background:conic-gradient(from 210deg at 50% 0%,#132433,#0e1b26 40%,#0a1620);opacity:.9;clip-path:polygon(0 0,100% 0,50% 55%)
+    }
+    .envelope .seal{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);background:var(--accent);color:#222;padding:10px 14px;border-radius:999px;font-weight:700;letter-spacing:.3px}
+    .envelope .tap{position:absolute;top:12px;right:12px;font-size:12px;color:var(--muted)}
+
+    /* Sections */
+    section{margin-top:34px}
+    h2{font-size:28px;margin:6px 0 14px;letter-spacing:.5px}
+    .grid{display:grid;gap:16px}
+    @media(min-width:800px){.grid.cols-3{grid-template-columns:repeat(3,1fr)}}
+    .map-divider{height:18px;margin:28px 0;background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="18"><path d="M0 9 Q 50 0 100 9 T 200 9 T 300 9 T 400 9 T 500 9 T 600 9 T 700 9 T 800 9 T 900 9 T 1000 9 T 1100 9 T 1200 9" fill="none" stroke="%23e0c34f" stroke-width="2" stroke-linecap="round"/></svg>') repeat-x; opacity:.7}
+
+    /* Carousel */
+    .carousel{position:relative;border-radius:16px;overflow:hidden;border:1px solid #1f2c38}
+    .carousel img{width:100%;height:360px;object-fit:cover;display:block}
+    .dots{position:absolute;bottom:10px;left:0;right:0;display:flex;justify-content:center;gap:6px}
+    .dot{width:8px;height:8px;border-radius:50%;background:#718da7;opacity:.6}
+    .dot.active{background:var(--accent)}
+
+    /* Love list */
+    .love-list{display:grid;gap:10px}
+    .love-item{display:flex;gap:10px;align-items:flex-start;background:var(--card);border:1px solid #1f2c38;padding:14px;border-radius:14px}
+
+    /* Timeline */
+    .timeline{position:relative;padding-left:18px}
+    .timeline::before{content:"";position:absolute;left:7px;top:0;bottom:0;width:2px;background:#1f2c38}
+    .t-item{position:relative;margin:12px 0;padding-left:14px}
+    .t-item::before{content:"";position:absolute;left:-1px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--accent)}
+
+    /* Footer music */
+    footer{margin:50px 0 30px;display:flex;justify-content:space-between;gap:16px;align-items:center}
+    .small{color:var(--muted);font-size:13px}
+
+    /* Typewriter */
+    .type{border-right:2px solid var(--accent);white-space:nowrap;overflow:hidden}
+
+    /* Confetti canvas */
+    #confetti{position:fixed;inset:0;pointer-events:none}
+
+    /* Hidden letter modal */
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;place-items:center;padding:16px}
+    .modal{width:min(760px,95vw);background:#0b1822;border:1px solid #1f2c38;border-radius:18px;padding:22px}
+    .modal h3{font-size:26px;margin:0 0 8px;font-family:"Great Vibes", cursive;color:var(--accent)}
+    .modal p{color:#e9f3ff;line-height:1.75}
+    .modal .close{margin-top:14px}
+
+    /* Little floating hats */
+    .heart{position:fixed;font-size:16px;color:var(--accent-2);opacity:.95;pointer-events:none;animation:float 2s ease-out forwards}
+    @keyframes float{to{transform:translateY(-80px);opacity:0}}
+  </style>
+</head>
+<body>
+  <canvas id="confetti"></canvas>
+  <div class="container">
+    <header>
+      <div class="logo">For <span id="navName">Captain</span> 👒</div>
+      <div class="pill" id="countdown">Charting the days…</div>
+    </header>
+
+    <section class="hero">
+      <div class="card">
+        <div class="pill">🎉 Pirate Birthday</div>
+        <h1 class="headline">To my favorite captain,
+          <span class="name" id="heroName">Love</span>! 🏴‍☠️</h1>
+        <p class="sub type" id="typewriter"></p>
+        <div class="ctaRow">
+          <button class="btn primary" id="openLetter">Open the treasure letter 💌</button>
+          <button class="btn ghost" id="confettiBtn">Fire the confetti cannons 🎊</button>
+        </div>
+      </div>
+      <div class="envelope card" id="envelope">
+        <span class="tap">tap to open</span>
+        <!-- Straw Hat icon -->
+        <svg width="120" height="120" viewBox="0 0 120 120" style="position:absolute;top:14px;left:14px;opacity:.85">
+          <circle cx="60" cy="60" r="58" fill="none" stroke="#1f2c38"/>
+          <path d="M30 70 L60 30 L90 70 Z" fill="#f5d76e" stroke="#e0c34f"/>
+          <rect x="48" y="45" width="24" height="10" rx="5" fill="#e24b4a"/>
+        </svg>
+        <div class="seal">Open me, Captain 👒</div>
+      </div>
+    </section>
+
+    <div class="map-divider" aria-hidden="true"></div>
+
+    <section>
+      <h2>Grand Line Memories</h2>
+      <div class="carousel" id="carousel">
+        <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?q=80&w=1400&auto=format&fit=crop" alt="photo 1">
+        <div class="dots" id="dots"></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>10 Things I Treasure About You</h2>
+      <div class="love-list" id="loveList"></div>
+    </section>
+
+    <section>
+      <h2>Our Voyage Log</h2>
+      <div class="timeline" id="timeline"></div>
+    </section>
+
+    <footer>
+      <div class="small">Tip: add your photos & a song to make it truly yours. 💿</div>
+      <div>
+        <button class="btn ghost" id="musicBtn">Play / Pause Sea Shanty ♪</button>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Hidden Letter Modal -->
+  <div class="overlay" id="overlay">
+    <div class="modal">
+      <h3>Message in a Bottle</h3>
+      <p id="letterText"></p>
+      <button class="btn primary close" id="closeLetter">Close</button>
+    </div>
+  </div>
+
+  <audio id="song" src="assets/song.mp3" preload="none"></audio>
+
+  <script>
+    // ========= Personalize here =========
+    const CONFIG = {
+      name: new URLSearchParams(location.search).get('name') || 'Captain',
+      birthdayDate: '2025-09-15', // YYYY-MM-DD
+      photos: [
+        'https://images.unsplash.com/photo-1543722530-d2c3201371e7?q=80&w=1400&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=1400&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1517260739337-6799d540aeb2?q=80&w=1400&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1521335629791-ce4aec67dd47?q=80&w=1400&auto=format&fit=crop',
+      ],
+      loveThings: [
+        'Your laugh that makes storms feel sunny',
+        'How you call my name (it’s magic)',
+        'Your brave heart and kind soul',
+        'The tiny details you never forget',
+        'Your hugs = safe harbor',
+        'That goofy victory dance',
+        'Cheering on my wild ideas',
+        'Your eyes when adventure calls',
+        'Our secret jokes',
+        'You. Simply you.'
+      ],
+      timeline: [
+        { date: '2024-11-10', text: 'First coffee at Yeti ☕' },
+        { date: '2024-12-02', text: 'Recess hangout turned into hours of laughter' },
+        { date: '2025-02-14', text: 'Valentine’s walk in the cold, hearts warm' },
+        { date: '2025-05-25', text: 'Sunset that felt like sailing the Grand Line' },
+      ],
+      letter: `Happy Birthday, ${'${name}'}!\n\nThank you for captaining my heart through calm seas and rough waves. I don’t need perfect — I just want *us*: showing up, laughing too loud, and hunting treasure in the ordinary.\n\nToday is for celebrating your legend. Always is for loving you.\n\n— Your first mate`
+    };
+
+    // ========= Setup text & name =========
+    const heroName = document.getElementById('heroName');
+    const navName = document.getElementById('navName');
+    const tabName = document.getElementById('tabName');
+    function setAllNames(n){
+      heroName.textContent = n;
+      navName.textContent = n;
+      document.title = `Happy Birthday, ${n} 👒`;
+    }
+    setAllNames(CONFIG.name);
+
+    // ========= Typewriter =========
+    const phrases = [
+      `Set sail, ${CONFIG.name} ⛵`,
+      'You + Me = our pirate crew',
+      'Today we celebrate your legend',
+    ];
+    const typeEl = document.getElementById('typewriter');
+    let pi=0, ci=0, typing=true;
+    function typeLoop(){
+      const text = phrases[pi];
+      typeEl.textContent = typing ? text.slice(0, ++ci) : text.slice(0, --ci);
+      if(typing && ci === text.length){ typing = false; setTimeout(typeLoop, 1500); return; }
+      if(!typing && ci === 0){ typing = true; pi = (pi+1)%phrases.length; }
+      setTimeout(typeLoop, typing ? 28 : 18);
+    }
+    typeLoop();
+
+    // ========= Envelope click: confetti + letter =========
+    const envelope = document.getElementById('envelope');
+    envelope.addEventListener('click', ()=>{ burstConfetti(); openLetter(); });
+
+    // ========= Simple carousel =========
+    const carousel = document.getElementById('carousel');
+    const img = carousel.querySelector('img');
+    const dots = document.getElementById('dots');
+    let idx=0; img.src = CONFIG.photos[0];
+    CONFIG.photos.forEach((_,i)=>{ const d=document.createElement('div'); d.className='dot'+(i===0?' active':''); d.onclick=()=>go(i); dots.appendChild(d);});
+    function go(i){ idx=i; img.src = CONFIG.photos[i]; [...dots.children].forEach((c,j)=>c.classList.toggle('active',j===i)); }
+    setInterval(()=> go((idx+1)%CONFIG.photos.length), 3500);
+
+    // ========= Love list =========
+    const loveList = document.getElementById('loveList');
+    CONFIG.loveThings.forEach((t,i)=>{
+      const div=document.createElement('div');
+      div.className='love-item';
+      div.innerHTML = `<div>💛</div><div><strong>#${String(i+1).padStart(2,'0')}.</strong> ${t}</div>`;
+      loveList.appendChild(div);
+    });
+
+    // ========= Timeline =========
+    const timeline = document.getElementById('timeline');
+    CONFIG.timeline.forEach(item=>{
+      const d=document.createElement('div');
+      const date = new Date(item.date).toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'});
+      d.className='t-item';
+      d.innerHTML = `<div class="pill" style="display:inline-block;margin-bottom:6px;">${date}</div><div>${item.text}</div>`;
+      timeline.appendChild(d);
+    });
+
+    // ========= Countdown =========
+    const countdown = document.getElementById('countdown');
+    function updateCountdown(){
+      const now = new Date();
+      const target = new Date(CONFIG.birthdayDate + 'T00:00:00');
+      if(now > target){ target.setFullYear(target.getFullYear()+1); }
+      const diff = target - now;
+      const d = Math.floor(diff/86400000);
+      const h = Math.floor(diff%86400000/3600000);
+      const m = Math.floor(diff%3600000/60000);
+      countdown.textContent = `${d}d ${h}h ${m}m until the feast`;
+    }
+    updateCountdown(); setInterval(updateCountdown, 60000);
+
+    // ========= Confetti =========
+    const canvas = document.getElementById('confetti');
+    const ctx = canvas.getContext('2d');
+    let confettiPieces=[]; let W,H; resize();
+    window.addEventListener('resize', resize);
+    function resize(){ W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
+    function burstConfetti(){
+      for(let i=0;i<160;i++){
+        confettiPieces.push({
+          x: Math.random()*W,
+          y: -20,
+          r: 6+Math.random()*6,
+          c: Math.random()<.5? '#f5d76e' : '#e24b4a',
+          vx: -2+Math.random()*4,
+          vy: 2+Math.random()*3,
+          a: Math.random()*Math.PI
+        });
+      }
+    }
+    function loop(){
+      ctx.clearRect(0,0,W,H);
+      confettiPieces.forEach(p=>{
+        p.x += p.vx; p.y += p.vy; p.vy += 0.03; p.a += 0.1;
+        ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.a);
+        ctx.fillStyle=p.c; ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r);
+        ctx.restore();
+      });
+      confettiPieces = confettiPieces.filter(p=> p.y < H+20);
+      requestAnimationFrame(loop);
+    }
+    loop();
+    document.getElementById('confettiBtn').onclick = burstConfetti;
+
+    // ========= Floating hats on click =========
+    window.addEventListener('click', (e)=>{
+      const s = document.createElement('div'); s.className='heart'; s.textContent='👒';
+      s.style.left = e.clientX+'px'; s.style.top = e.clientY+'px';
+      document.body.appendChild(s); setTimeout(()=>s.remove(),2000);
+    });
+
+    // ========= Letter modal =========
+    const overlay = document.getElementById('overlay');
+    const letterText = document.getElementById('letterText');
+    function openLetter(){ letterText.textContent = CONFIG.letter.replace('${name}', CONFIG.name); overlay.style.display='grid'; }
+    function closeLetter(){ overlay.style.display='none'; }
+    document.getElementById('openLetter').onclick = openLetter;
+    document.getElementById('closeLetter').onclick = closeLetter;
+    overlay.addEventListener('click', (e)=>{ if(e.target===overlay) closeLetter(); });
+
+    // ========= Music toggle =========
+    const music = document.getElementById('song');
+    document.getElementById('musicBtn').onclick = async ()=>{
+      try{ if(music.paused){ await music.play(); } else { music.pause(); } }catch(e){ alert('Add a song at assets/song.mp3 to enable music.'); }
+    };
+
+    // ========= Bonus: URL personalization =========
+    // Example: index.html?name=Zoro
+
+  </script>
+</body>
+</html>
